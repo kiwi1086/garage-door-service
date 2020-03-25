@@ -5,14 +5,11 @@ Figure
 Motivation
 
 
-## TODO delete everything below
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Information
+This project uses Quarkus, the Supersonic Subatomic Java Framework, if you want to know more please visit its website: https://quarkus.io/ .
 
 ## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
+You can run the application in dev mode that enables live coding using:
 ```
 ./gradlew quarkusDev
 ```

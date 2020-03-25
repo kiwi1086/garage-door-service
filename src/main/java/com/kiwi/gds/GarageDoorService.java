@@ -16,30 +16,30 @@ import javax.ws.rs.core.MediaType;
 public class GarageDoorService {
 
     @Inject
-    StatusService statusService;
+    DoorStatus doorStatus;
 
     @Inject
-    GarageDoorHandler garageDoorHandler;
+    GarageDoor garageDoor;
 
     //@PATCH TODO what is correct?
     @GET
     @Path("/open")
     @Produces(MediaType.APPLICATION_JSON)
-    public StatusService open() {
-        if(!garageDoorHandler.isInProgress()) {
+    public DoorStatus open() {
+        if(!garageDoor.isInProgress()) {
             log.info("GarageDoorHandler triggerd to open the garage door");
-            garageDoorHandler.open();
+            garageDoor.open();
         } else {
             log.info("GarageDoorHandler is already active");
         }
-        return statusService;
+        return doorStatus;
     }
 
     @GET
     @Path("/status")
     @Produces(MediaType.APPLICATION_JSON)
-    public StatusService getStatus() {
-        log.info("GarageDoor Status '{}', GarageDoorHandler Active '{}'", statusService.getStatus().getValue(), garageDoorHandler.isInProgress());
-        return statusService;
+    public DoorStatus getStatus() {
+        log.info("GarageDoor Status '{}', GarageDoorHandler Active '{}'", doorStatus.getStatus().getValue(), garageDoor.isInProgress());
+        return doorStatus;
     }
 }

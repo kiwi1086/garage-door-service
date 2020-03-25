@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 
 @AllArgsConstructor
-public enum Status {
+public enum StatusType {
     CLOSED("closed"),
     OPENING("opening"),
     OPEN("open"),

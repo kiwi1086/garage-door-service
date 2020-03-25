@@ -7,32 +7,37 @@ import javax.inject.Singleton;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author Willi Kisser
+ */
 
 @Slf4j
 @Singleton
-public class GarageDoorHandler {
+public class GarageDoor {
 
     @Inject
-    StatusService statusService;
+    DoorStatus doorStatus;
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private Future<Boolean> doorFuture;
+    private Future<Boolean> doorOpeningThread;
 
     public void open() {
-        doorFuture = openFuture();
+        doorOpeningThread = openSubmit();
     }
 
-    private Future<Boolean> openFuture() {
+    private Future<Boolean> openSubmit() {
         return executor.submit(() -> {
             try {
-                statusService.setStatus(Status.OPENING);
-                Thread.sleep(3000); // TODO assumption
-                statusService.setStatus(Status.OPEN);
-                Thread.sleep(5000); // TODO assumption
-                statusService.setStatus(Status.CLOSING);
-                Thread.sleep(3000); // TODO assumption
-                statusService.setStatus(Status.CLOSED);
+                doorStatus.setStatus(StatusType.OPENING);
+                TimeUnit.SECONDS.sleep(3);
+                doorStatus.setStatus(StatusType.OPEN);
+                TimeUnit.SECONDS.sleep(5);
+                doorStatus.setStatus(StatusType.CLOSING);
+                TimeUnit.SECONDS.sleep(3);
+                doorStatus.setStatus(StatusType.CLOSED);
             } catch (InterruptedException e) {
                 log.warn(e.getMessage());
                 return Boolean.FALSE;
@@ -42,8 +47,8 @@ public class GarageDoorHandler {
     }
 
     public boolean isInProgress() {
-        if (doorFuture == null)
+        if (doorOpeningThread == null)
             return false;
-        return !doorFuture.isDone();
+        return !doorOpeningThread.isDone();
     }
 }

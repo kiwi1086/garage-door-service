@@ -5,9 +5,13 @@ import lombok.Setter;
 
 import javax.inject.Singleton;
 
+/**
+ * @author Willi Kisser
+ */
+
 @Singleton
-public class StatusService {
+public class DoorStatus {
     @Getter
     @Setter
-    Status status = Status.CLOSED;
+    StatusType status = StatusType.CLOSED;
 }
