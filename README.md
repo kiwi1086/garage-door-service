@@ -1,4 +1,5 @@
 # garage-door-service (gds) project
+[![CircleCI Build Status](https://circleci.com/gh/kiwi1086/garage-door-service/tree/master.svg?style=shield)](https://circleci.com/gh/kiwi1086/garage-door-service/tree/master)
 
 Figure
 
