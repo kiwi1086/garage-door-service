@@ -14,7 +14,7 @@
 .gradle
 build/
 
-# Gradle ignore to ignore wrapper jar file
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
 # Package Files #
