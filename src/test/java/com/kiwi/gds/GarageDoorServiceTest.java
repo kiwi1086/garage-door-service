@@ -20,7 +20,7 @@ public class GarageDoorServiceTest {
             .when().get("/garagedoor/status")
             .then()
                 .statusCode(200)
-                .body(containsString(StatusType.CLOSED.name())); // TODO its possible to do it better
+                .body(containsString(DoorStatus.StatusType.CLOSED.name())); // TODO its possible to do it better
     }
 
     @Test
@@ -30,7 +30,7 @@ public class GarageDoorServiceTest {
             .when().get("/garagedoor/open")
             .then()
                 .statusCode(200)
-                .body(containsString(StatusType.OPENING.name()));
+                .body(containsString(DoorStatus.StatusType.OPENING.name()));
     }
 
 }

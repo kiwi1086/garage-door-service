@@ -26,11 +26,11 @@ public class GarageDoorService {
     @Path("/open")
     @Produces(MediaType.APPLICATION_JSON)
     public DoorStatus open() {
-        if(!garageDoor.isInProgress()) {
-            log.info("GarageDoorHandler triggerd to open the garage door");
+        if (!garageDoor.isInProgress()) {
+            log.info("GarageDoor is opening the garage door");
             garageDoor.open();
         } else {
-            log.info("GarageDoorHandler is already active");
+            log.info("GarageDoor already opening, open or closing the garage door");
         }
         return doorStatus;
     }

@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,35 +20,35 @@ public class GarageDoor {
     @Inject
     DoorStatus doorStatus;
 
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    private Future<Boolean> doorOpeningThread;
+    private Future<Boolean> garageDoorSequence;
 
     public void open() {
-        doorOpeningThread = openSubmit();
+        // TODO opening garage door with 443 Mhz signal
+        doorStatus.setStatus(DoorStatus.StatusType.OPENING);
+        garageDoorSequence = executeGarageDoorSequence();
     }
 
-    private Future<Boolean> openSubmit() {
-        return executor.submit(() -> {
+    private Future<Boolean> executeGarageDoorSequence() {
+        return executor.schedule(() -> {
             try {
-                doorStatus.setStatus(StatusType.OPENING);
-                TimeUnit.SECONDS.sleep(3);
-                doorStatus.setStatus(StatusType.OPEN);
+                doorStatus.setStatus(DoorStatus.StatusType.OPEN);
                 TimeUnit.SECONDS.sleep(5);
-                doorStatus.setStatus(StatusType.CLOSING);
+                doorStatus.setStatus(DoorStatus.StatusType.CLOSING);
                 TimeUnit.SECONDS.sleep(3);
-                doorStatus.setStatus(StatusType.CLOSED);
+                doorStatus.setStatus(DoorStatus.StatusType.CLOSED);
             } catch (InterruptedException e) {
                 log.warn(e.getMessage());
                 return Boolean.FALSE;
             }
             return Boolean.TRUE;
-        });
+        }, 3, TimeUnit.SECONDS);
     }
 
     public boolean isInProgress() {
-        if (doorOpeningThread == null)
+        if (garageDoorSequence == null)
             return false;
-        return !doorOpeningThread.isDone();
+        return !garageDoorSequence.isDone();
     }
 }
