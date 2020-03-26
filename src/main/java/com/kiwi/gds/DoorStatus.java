@@ -1,9 +1,6 @@
 package com.kiwi.gds;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,17 +16,8 @@ public class DoorStatus {
 
     private GpioController gpio = GpioFactory.getInstance();
 
-    private GpioPinDigitalOutput orangeLed[] = new GpioPinDigitalOutput[3]; // 23
-    private GpioPinDigitalOutput redLed[] = new GpioPinDigitalOutput[3]; // 24
-
-    @PostConstruct
-    void init() {
-        orangeLed[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16);
-        redLed[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_18);
-
-        // initial state
-        redLed[0].setState(true);
-    }
+    private final GpioPinDigitalOutput orangeLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "RedLed", PinState.LOW); //23
+    private final GpioPinDigitalOutput redLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OrangeLed", PinState.HIGH); //24
 
     @AllArgsConstructor
     public enum StatusType {
@@ -48,14 +36,14 @@ public class DoorStatus {
     public void setStatus(StatusType statusType) {
         this.status = statusType;
         if (status.equals(StatusType.CLOSING) || status.equals(StatusType.OPENING)) {
-            redLed[0].setState(false);
-            orangeLed[0].setState(true);
+            redLed.setState(false);
+            orangeLed.setState(true);
         } else if (status.equals(StatusType.OPEN)) {
-            redLed[0].setState(false);
-            orangeLed[0].setState(false);
+            redLed.setState(false);
+            orangeLed.setState(false);
         } else {
-            redLed[0].setState(true);
-            orangeLed[0].setState(false);
+            redLed.setState(true);
+            orangeLed.setState(false);
         }
 
     }
