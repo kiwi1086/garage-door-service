@@ -6,6 +6,9 @@ Figure
 Motivation
 
 
+![Raspberry Pi GPIO](documentation/raspberry-pi-pinout.png "Raspberry Pi GPIO")
+[Source]: https://pinout.xyz/
+
 ## Information
 This project uses Quarkus, the Supersonic Subatomic Java Framework, if you want to know more please visit its website: https://quarkus.io/ .
 
