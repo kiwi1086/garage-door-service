@@ -16,6 +16,9 @@ import javax.ws.rs.core.MediaType;
 public class GarageDoorService {
 
     @Inject
+    LedHandler ledHandler;
+
+    @Inject
     DoorStatus doorStatus;
 
     @Inject
@@ -41,5 +44,17 @@ public class GarageDoorService {
     public DoorStatus getStatus() {
         log.info("GarageDoor Status '{}', GarageDoorHandler Active '{}'", doorStatus.getStatus().getValue(), garageDoor.isInProgress());
         return doorStatus;
+    }
+
+    @GET
+    @Path("/ledactive")
+    public void setLedActive() {
+        ledHandler.setActive(true);
+    }
+
+    @GET
+    @Path("/ledinactive")
+    public void setLedInactive() {
+        ledHandler.setActive(false);
     }
 }
