@@ -18,6 +18,10 @@ public class LedHandler {
     private final GpioPinDigitalOutput orangeLed2nd = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "RedLed", PinState.LOW); //25
     private final GpioPinDigitalOutput redLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OrangeLed", PinState.LOW); //24
 
+    private boolean orangeLedI = false;
+    private boolean orangeLed2ndI = false;
+    private boolean redLedI = false;
+
     @Getter
     private boolean active = false;
 
@@ -27,22 +31,29 @@ public class LedHandler {
             orangeLed.setState(false);
             orangeLed2nd.setState(false);
             redLed.setState(false);
+        } else {
+            orangeLed.setState(orangeLedI);
+            orangeLed2nd.setState(orangeLed2ndI);
+            redLed.setState(redLedI);
         }
     }
 
     public void setOrangeLedState(boolean state) {
+        orangeLedI = state;
         if (active) {
             orangeLed.setState(state);
         }
     }
 
     public void setOrangeLed2ndState(boolean state) {
+        orangeLed2ndI = state;
         if (active) {
             orangeLed2nd.setState(state);
         }
     }
 
     public void setRedLedState(boolean state) {
+        redLedI = state;
         if (active) {
             redLed.setState(state);
         }

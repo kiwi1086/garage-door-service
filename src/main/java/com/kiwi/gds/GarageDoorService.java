@@ -48,13 +48,17 @@ public class GarageDoorService {
 
     @GET
     @Path("/ledactive")
-    public void setLedActive() {
+    @Produces(MediaType.TEXT_HTML)
+    public String setLedActive() {
         ledHandler.setActive(true);
+        return "active";
     }
 
     @GET
     @Path("/ledinactive")
-    public void setLedInactive() {
+    @Produces(MediaType.TEXT_HTML)
+    public String setLedInactive() {
         ledHandler.setActive(false);
+        return "inactive";
     }
 }
