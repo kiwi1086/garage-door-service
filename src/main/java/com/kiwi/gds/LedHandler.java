@@ -1,14 +1,9 @@
 package com.kiwi.gds;
 
 import com.pi4j.io.gpio.*;
-import io.quarkus.smallrye.metrics.runtime.LambdaGauge;
 import lombok.Getter;
-import org.eclipse.microprofile.metrics.Metadata;
-import org.eclipse.microprofile.metrics.MetricRegistry;
-import org.eclipse.microprofile.metrics.MetricType;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -17,11 +12,6 @@ import javax.inject.Singleton;
 
 @Singleton
 public class LedHandler {
-
-    @Inject
-    MetricRegistry metricRegistry;
-
-    private final static Metadata LED_ACTIVE_METATDATA = Metadata.builder().withName("led_active").withDescription("State if the LEDs are active or not").withType(MetricType.GAUGE).build();
 
     private GpioController gpio = GpioFactory.getInstance();
 
@@ -36,7 +26,6 @@ public class LedHandler {
     @PostConstruct
     void init() {
         setActive(false);
-        metricRegistry.register(LED_ACTIVE_METATDATA, new LambdaGauge(() -> 0));
     }
 
     @Getter
@@ -49,7 +38,6 @@ public class LedHandler {
             orangeLed2nd.setState(false);
             redLed.setState(false);
         } else {
-            metricRegistry.register(LED_ACTIVE_METATDATA, new LambdaGauge(() -> 1));
             orangeLed.setState(orangeLedI);
             orangeLed2nd.setState(orangeLed2ndI);
             redLed.setState(redLedI);
