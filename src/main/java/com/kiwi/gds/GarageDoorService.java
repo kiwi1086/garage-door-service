@@ -1,8 +1,6 @@
 package com.kiwi.gds;
 
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.metrics.Metadata;
-import org.eclipse.microprofile.metrics.MetricType;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 
 import javax.inject.Inject;
@@ -21,7 +19,7 @@ public class GarageDoorService {
 
 
     @Inject
-    LedHandler ledHandler;
+    LedController ledController;
 
     @Inject
     DoorStatus doorStatus;
@@ -57,7 +55,7 @@ public class GarageDoorService {
     @Path("/ledactive")
     @Produces(MediaType.TEXT_HTML)
     public String setLedActive() {
-        ledHandler.setActive(true);
+        ledController.setActive(true);
         return "active";
     }
 
@@ -65,7 +63,7 @@ public class GarageDoorService {
     @Path("/ledinactive")
     @Produces(MediaType.TEXT_HTML)
     public String setLedInactive() {
-        ledHandler.setActive(false);
+        ledController.setActive(false);
         return "inactive";
     }
 }

@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 public class DoorStatus {
 
     @Inject
-    LedHandler ledHandler;
+    LedController ledController;
 
     @AllArgsConstructor
     public enum StatusType {
@@ -33,17 +33,17 @@ public class DoorStatus {
     public void setStatus(StatusType statusType) {
         this.status = statusType;
         if (status.equals(StatusType.CLOSING) || status.equals(StatusType.OPENING)) {
-            ledHandler.setRedLedState(false);
-            ledHandler.setOrangeLed2ndState(true);
-            ledHandler.setOrangeLedState(false);
+            ledController.setRedLedState(false);
+            ledController.setOrangeLed2ndState(true);
+            ledController.setOrangeLedState(false);
         } else if (status.equals(StatusType.OPEN)) {
-            ledHandler.setRedLedState(false);
-            ledHandler.setOrangeLed2ndState(false);
-            ledHandler.setOrangeLedState(true);
+            ledController.setRedLedState(false);
+            ledController.setOrangeLed2ndState(false);
+            ledController.setOrangeLedState(true);
         } else {
-            ledHandler.setRedLedState(true);
-            ledHandler.setOrangeLed2ndState(false);
-            ledHandler.setOrangeLedState(false);
+            ledController.setRedLedState(true);
+            ledController.setOrangeLed2ndState(false);
+            ledController.setOrangeLedState(false);
         }
     }
 

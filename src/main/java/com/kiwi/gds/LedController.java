@@ -11,17 +11,18 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public class LedHandler {
+public class LedController {
 
     private GpioController gpio = GpioFactory.getInstance();
 
-    private final GpioPinDigitalOutput orangeLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "RedLed", PinState.LOW); //23
-    private final GpioPinDigitalOutput orangeLed2nd = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "RedLed", PinState.LOW); //25
+    private final GpioPinDigitalOutput greenLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "RedLed", PinState.LOW); //23
+    private final GpioPinDigitalOutput orangeLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "RedLed", PinState.LOW); //25
     private final GpioPinDigitalOutput redLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "OrangeLed", PinState.LOW); //24
 
-    private boolean orangeLedI = false;
-    private boolean orangeLed2ndI = false;
-    private boolean redLedI = false;
+    // Internal State to remember which led is on/off even if it's inactive
+    private boolean greenLedIState = false;
+    private boolean orangeLedIState = false;
+    private boolean redLedIState = false;
 
     @PostConstruct
     void init() {
@@ -34,35 +35,32 @@ public class LedHandler {
     public void setActive(boolean active) {
         this.active = active;
         if (!active) {
+            greenLed.setState(false);
             orangeLed.setState(false);
-            orangeLed2nd.setState(false);
             redLed.setState(false);
         } else {
-            orangeLed.setState(orangeLedI);
-            orangeLed2nd.setState(orangeLed2ndI);
-            redLed.setState(redLedI);
+            greenLed.setState(greenLedIState);
+            orangeLed.setState(orangeLedIState);
+            redLed.setState(redLedIState);
         }
     }
 
     public void setOrangeLedState(boolean state) {
-        orangeLedI = state;
-        if (active) {
-            orangeLed.setState(state);
-        }
+        greenLedIState = state;
+        if (active)
+            greenLed.setState(state);
     }
 
     public void setOrangeLed2ndState(boolean state) {
-        orangeLed2ndI = state;
-        if (active) {
-            orangeLed2nd.setState(state);
-        }
+        orangeLedIState = state;
+        if (active)
+            orangeLed.setState(state);
     }
 
     public void setRedLedState(boolean state) {
-        redLedI = state;
-        if (active) {
+        redLedIState = state;
+        if (active)
             redLed.setState(state);
-        }
     }
 
 }
