@@ -11,7 +11,7 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public class LedController {
+public class LedController implements LedControllerI {
 
     private GpioController gpio = GpioFactory.getInstance();
 
@@ -45,13 +45,13 @@ public class LedController {
         }
     }
 
-    public void setOrangeLedState(boolean state) {
+    public void setGreenLedState(boolean state) {
         greenLedIState = state;
         if (active)
             greenLed.setState(state);
     }
 
-    public void setOrangeLed2ndState(boolean state) {
+    public void setOrangeLedState(boolean state) {
         orangeLedIState = state;
         if (active)
             orangeLed.setState(state);

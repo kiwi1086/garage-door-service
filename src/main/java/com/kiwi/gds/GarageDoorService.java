@@ -3,8 +3,10 @@ package com.kiwi.gds;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -17,9 +19,8 @@ import javax.ws.rs.core.MediaType;
 @Path("/garagedoor")
 public class GarageDoorService {
 
-
     @Inject
-    LedController ledController;
+    LedControllerI ledController;
 
     @Inject
     DoorStatus doorStatus;
@@ -27,7 +28,7 @@ public class GarageDoorService {
     @Inject
     GarageDoor garageDoor;
 
-    //@PATCH TODO what is correct?
+    //@POST TODO what is correct?
     @GET
     @Path("/open")
     @Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +44,7 @@ public class GarageDoorService {
     }
 
     @GET
-    @Path("/status")
+    @Path("/status") // TODO better '<empty>' so that /garagedoor returns the state of the garage door
     @Produces(MediaType.APPLICATION_JSON)
     @Counted(name = "performStatus", description = "How garage door status requests have been performed.")
     public DoorStatus getStatus() {
@@ -51,19 +52,17 @@ public class GarageDoorService {
         return doorStatus;
     }
 
-    @GET
+    @PUT
     @Path("/ledactive")
-    @Produces(MediaType.TEXT_HTML)
-    public String setLedActive() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public void setLedActive() {
         ledController.setActive(true);
-        return "active";
     }
 
-    @GET
+    @PUT
     @Path("/ledinactive")
-    @Produces(MediaType.TEXT_HTML)
-    public String setLedInactive() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public void setLedInactive() {
         ledController.setActive(false);
-        return "inactive";
     }
 }
